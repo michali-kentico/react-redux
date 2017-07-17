@@ -5,6 +5,8 @@ import * as courseActions from '../../actions/courseActions';
 // 3. varianta
 import { bindActionCreators } from 'redux';
 
+
+// Container komponenta
 class CoursesPage extends React.Component {
   constructor(props, context) {
     super(props,  context);
@@ -42,6 +44,8 @@ class CoursesPage extends React.Component {
     return <div key={index}>{course.title}</div>;
   }
 
+  // Typicky se používá Child (Presentation) komponenta, která zajišťuje zobrazování obsahu.
+  // V rámci zjednodušení je prezentační část vložena přímo do této Container komponenty.
   render() {
     return (
       <div>
