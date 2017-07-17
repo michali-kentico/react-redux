@@ -7,11 +7,16 @@ import routes from './routes';
 // Redux
 import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
+
+import { loadCourses } from './actions/courseActions';
+
 // Importování stylů
 import './styles/styles.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 const store = configureStore();
+// Prvotní načtení kurzů z API
+store.dispatch(loadCourses());
 
 ReactDOM.render(
   <Provider store={store}>
