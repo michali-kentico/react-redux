@@ -34,8 +34,7 @@ class ManageCoursePage extends React.Component {
   saveCourse(event) {
     event.preventDefault();
     this.props.actions.saveCourse(this.state.course);
-    //this.context.router.push('/courses');
-    browserHistory.push('/courses');
+    this.context.router.push('/courses');
   }
 
   render() {
