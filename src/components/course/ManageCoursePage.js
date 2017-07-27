@@ -4,8 +4,11 @@ import {bindActionCreators} from 'redux';
 import * as courseAction from '../../actions/courseActions';
 import CourseForm from './CourseForm';
 import toastr from 'toastr';
+import { authorsFormattedForDropdown } from '../../selectors/authorSelector';
 
-class ManageCoursePage extends React.Component {
+// Přidáním export před class docílím toho, že mimo default export (níže) se bude i exportovat tato komponenta bez vazeb na redux.
+// Jedná se o takzvaný "named export".
+export class ManageCoursePage extends React.Component {
   constructor(props, context) {
     super(props, context);
 
@@ -32,8 +35,34 @@ class ManageCoursePage extends React.Component {
     return this.setState({ course });
   }
 
+  // Validace formuláře na straně klienta
+  isFormValid() {
+    // Vytvořím objekt errors
+    let errors = {};
+
+    // Pokud některá z podmínek neplatí, přidám do objektu errors chybovou zprávu
+    if (this.state.course.title.length < 5) {
+      errors.title = 'Title must be at least 5 characters.';
+    }
+    if (this.state.course.authorId === "") {
+      errors.authorId = 'Author must be selected.';
+    }
+
+    // Do lokálního stavu komponenty nastavím nový stav errors
+    this.setState({ errors });
+    // Vrátím true, pokud objekt errors neobsahuje žádné keys (tj. je prázdný)
+    return Object.keys(errors).length === 0;
+  }
+
   saveCourse(event) {
     event.preventDefault();
+
+    // Nejdříve zkontroluje validitu formuláře a pokud je nevalidní, ukládání přeruší
+    if (!this.isFormValid()) {
+      return;
+    }
+
+    // Pak se teprve pokusí odeslat data a zobrazí notifikaci o úspěchu/neúspěchu volání API
     this.setState({ saving: true });
     this.props.actions.saveCourse(this.state.course)
       .then(() => this.redirect())
@@ -89,16 +118,9 @@ function mapStateToProps(state, ownProps) {
     course = getCourseById(state.courses, courseId);
   }
 
-  const authorsFormattedForDropdown = state.authors.map(author => {
-    return {
-      value: author.id,
-      text: author.firstName + ' ' + author.lastName
-    };
-  });
-
   return {
     course: course,
-    authors: authorsFormattedForDropdown
+    authors: authorsFormattedForDropdown(state.authors)
   };
 }
 
