@@ -5,7 +5,7 @@ import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 
 // Redux
-import configureStore from './store/configureStore';
+import configureStore from './store/configureStore'; // eslint-disable-line import/default
 import { Provider } from 'react-redux';
 
 import { loadCourses } from './actions/courseActions';
