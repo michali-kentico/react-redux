@@ -6,6 +6,8 @@ import open from 'open';
 
 /* eslint-disable no-console */
 
+
+// Definování development serveru
 const port = 3000;
 const app = express();
 const compiler = webpack(config);
